@@ -1,12 +1,13 @@
 FROM centos:7
 
-
+#change repo from mirror list to vault
 RUN sed -i 's/^mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Base.repo && \
     sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Base.repo && \
     yum clean all && \
     yum -y update
  
 RUN yum -y install vim
+
 
 RUN yum -y install epel-release && \
     yum -y install nginx java-1.8.0-openjdk wget redis && \
@@ -21,8 +22,6 @@ RUN wget https://downloads.apache.org/kafka/3.9.1/kafka_2.13-3.9.1.tgz && \
     mv /opt/kafka_2.13-3.9.1 /opt/kafka && \
     rm -f kafka_2.13-3.9.1.tgz
 
-
-WORKDIR /opt/kafka
 
 # Copy main nginx.conf to /etc/nginx/nginx.conf
 COPY nginx.conf /etc/nginx/nginx.conf
